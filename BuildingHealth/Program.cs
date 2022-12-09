@@ -4,7 +4,8 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
-using BuildingHealth.BLL;
+using BuildingHealth.BLL.Services;
+using BuildingHealth.BLL.Interfaces;
 using BuildingHealth.DAL;
 
 const string audience = "https://localhost:7070/";
@@ -20,6 +21,14 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 
 builder.Services.AddDbContext<BuildingHealthDBContext>(options =>
     options.UseSqlServer("Data Source=PRUDIUSVLADPC\\DEV;Initial Catalog=BuildingHealthDB;Integrated Security=True"));
+
+
+builder.Services.AddScoped<IUserManagerServise, UserManagerService>();
+builder.Services.AddScoped<IRecomendationService, RecomendationService>();
+builder.Services.AddScoped<IChartDataService, ChartDataService>();
+
+
+
 
 builder.Services.AddControllers().AddNewtonsoftJson(x =>
  x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
