@@ -12,7 +12,8 @@ namespace BuildingHealth.BLL.Interfaces
     {
         Task<List<ChartEntries>> GetSensorsResultData(int responseId);
         Task<List<ChartEntries>> GetBuildingStateDynamic(int buildingId);
-        public double GetConstructionsState(
+        Task<List<ChartEntries>> GetBuildingState(int buildingId);
+        double GetConstructionsState(
             IEnumerable<MainCostructionState> states);
     }
 }

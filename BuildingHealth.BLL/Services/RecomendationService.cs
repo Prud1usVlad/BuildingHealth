@@ -30,7 +30,9 @@ namespace BuildingHealth.BLL.Services
                 .ThenInclude(r => r.MainCostructionStates)
                 .FirstAsync(b => b.Id == buildingId);
 
-            var response = building.SensorsResponses.FirstOrDefault();
+            var response = building.SensorsResponses
+                .OrderByDescending(r => r.Date)
+                .FirstOrDefault();
 
             if (response is null)
             {

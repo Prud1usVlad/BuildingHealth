@@ -42,5 +42,18 @@ namespace BuildingHealth.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("Sensors/Building/{id}")]
+        public async Task<ActionResult<List<ChartEntries>>> GetBuildingSensorsChart(int id)
+        {
+            try
+            {
+                return await _chartDataService.GetBuildingState(id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

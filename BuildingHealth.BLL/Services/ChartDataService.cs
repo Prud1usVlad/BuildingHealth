@@ -33,31 +33,37 @@ namespace BuildingHealth.BLL.Services
 
             foreach (var response in responses)
             {
-                var entry = (await GetSensorsResultData(response.Id)).First();
-
-                entry.Label = response.Date.Value.Date.ToString();
-                entry.SecondValue = GetConstructionsState(response.MainCostructionStates);
-                entry.ThirdValue = 0;
-
-                entry.ThirdValue += 50 - (int)response.GroundWaterLevel * 10;
-                entry.ThirdValue += 50 - (int)response.GroundAcidityLevel * 10;
-
-                result.Add(entry);
+                result.Add(await GetEntries(response));
             }
 
             return result;
+        }
+
+        public async Task<List<ChartEntries>> GetBuildingState(int buildingId)
+        {
+            var building = await _dbContext.BuildingProjects
+                .Include(p => p.SensorsResponses)
+                .ThenInclude(r => r.MainCostructionStates)
+                .FirstAsync(b => b.Id == buildingId);
+
+            var response = building.SensorsResponses
+                .OrderByDescending(r => r.Date)
+                .FirstOrDefault();
+
+            return await GetSensorsResultData(response.Id);
         }
 
         public async Task<List<ChartEntries>> GetSensorsResultData(int responseId)
         {
             var result = new List<ChartEntries>()
             {
-                new ChartEntries() { Label = "State, %" },
-                new ChartEntries() { Label = "State, %" },
+                new ChartEntries() { Label = "Good State, %" },
+                new ChartEntries() { Label = "Bad State, %" },
             };
 
             var sensorsResponse = await _dbContext.SensorsResponses
                 .Include(r => r.MainCostructionStates)
+                .OrderByDescending(r => r.Date)
                 .FirstAsync(r => r.Id == responseId);
             double chartValue = 0;
 
@@ -65,8 +71,8 @@ namespace BuildingHealth.BLL.Services
             chartValue += 25 - (int)sensorsResponse.GroundAcidityLevel * 5;
             chartValue += GetConstructionsState(sensorsResponse.MainCostructionStates) / 2;
 
-            result[0].FirstValue = chartValue;
-            result[1].FirstValue = 100D - chartValue;
+            result[0].FirstValue = Math.Round(chartValue, 2);
+            result[1].FirstValue = Math.Round(100D - chartValue, 2);
             return result;
         }
 
@@ -78,6 +84,20 @@ namespace BuildingHealth.BLL.Services
                 a += (double)i.DeformationLevel + (double)i.CompressionLevel);
 
             return 100 - (coef * agregatedValue);
+        }
+
+        private async Task<ChartEntries> GetEntries(SensorsResponse response)
+        {
+            var entry = (await GetSensorsResultData(response.Id)).First();
+
+            entry.Label = response.Date.Value.Date.ToString();
+            entry.SecondValue = GetConstructionsState(response.MainCostructionStates);
+            entry.ThirdValue = 0;
+
+            entry.ThirdValue += 50 - (int)response.GroundWaterLevel * 10;
+            entry.ThirdValue += 50 - (int)response.GroundAcidityLevel * 10;
+
+            return entry;
         }
     }
 }

@@ -26,7 +26,6 @@ namespace BuildingHealth.Controllers
         public async Task<ActionResult<IEnumerable<BuildingProject>>> GetBuildingProjects()
         {
             return await _context.BuildingProjects
-                .Include(p => p.Architect)
                 .ToListAsync();
         }
 
@@ -35,7 +34,6 @@ namespace BuildingHealth.Controllers
         public async Task<ActionResult<BuildingProject>> GetBuildingProject(int id)
         {
             var buildingProject = await _context.BuildingProjects
-                .Include(p => p.Architect)
                 .FirstAsync(p => p.Id == id);
 
             if (buildingProject == null)

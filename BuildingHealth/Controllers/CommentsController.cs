@@ -46,6 +46,22 @@ namespace BuildingHealth.Controllers
             return comment;
         }
 
+        [HttpGet("Project/{id}")]
+        public ActionResult<IEnumerable<Comment>> GetComments(int id)
+        {
+            var comments = _context.Comments
+                .Include(c => c.User)
+                .Where(c => c.BuildingProjectId == id)
+                .ToList();
+
+            if (comments.Count() == 0)
+            {
+                return new List<Comment>();
+            }
+
+            return comments;
+        }
+
         // PUT: api/Comments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
