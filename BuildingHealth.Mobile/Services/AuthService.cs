@@ -28,6 +28,11 @@ namespace BuildingHealth.Mobile.Services
 
             var responseResult = JsonSerializer.Deserialize<AuthResponse>(stringResult, _jsonSerializerOptions);
 
+            if (responseResult.Role.ToLower() != "Architect")
+            {
+                return false;
+            }
+
             Preferences.Set("UserId", responseResult.UserId);
             Preferences.Set("Token", responseResult.Token);
 

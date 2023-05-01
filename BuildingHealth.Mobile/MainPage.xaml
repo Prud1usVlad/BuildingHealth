@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BuildingHealth.Mobile.MainPage"
-             Title="title">
+             Title="Main">
 
     <ScrollView>
         <VerticalStackLayout
@@ -11,30 +11,36 @@
             VerticalOptions="Center">
 
             <Image
-                Source="dotnet_bot.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
+                Source="logo.png"
                 HeightRequest="200"
                 HorizontalOptions="Center" />
 
             <Label
-                Text="Hello, World!"
-                SemanticProperties.HeadingLevel="Level1"
+                Text="Welcome here!"
                 FontSize="32"
                 HorizontalOptions="Center" />
 
             <Label
-                Text="Welcome to .NET Multi-platform App UI"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+                Text="Curabitur ullamcorper vitae lectus ac convallis. Vivamus aliquet in turpis eu iaculis. Donec nec nisi vitae neque porttitor auctor ac id urna. Aenean quis est pretium, interdum ipsum sit amet, maximus dui. Mauris fermentum elementum diam, eu tristique orci tincidunt non. Duis condimentum in odio non ullamcorper. Sed non maximus tortor. Curabitur at nibh quis lacus fringilla cursus ac id lacus."
                 FontSize="18"
-                HorizontalOptions="Center" />
+                />
+
+            <Label 
+                Text="Nam et lacus risus. Pellentesque laoreet nunc vel libero volutpat mattis in sed ex. Donec sed quam ut turpis euismod suscipit eu a orci. In eu finibus urna, ut tristique quam. Sed elit ligula, ultrices ut urna eget, interdum pellentesque erat. Curabitur egestas ipsum ac massa gravida, eget ultrices urna tempor. Mauris at lacus orci. Proin bibendum ultricies ligula, quis ornare leo interdum at. Integer sit amet enim eros. Vivamus et turpis in nisl maximus laoreet at in urna. Nulla vel ultricies odio. Proin sollicitudin, orci eu feugiat auctor, augue ligula porta massa, ac interdum leo ligula feugiat turpis."
+                FontSize="18"/>
+
+            <Label
+                Text="Curabitur ullamcorper vitae lectus ac convallis. Vivamus aliquet in turpis eu iaculis. Donec nec nisi vitae neque porttitor auctor ac id urna. Aenean quis est pretium, interdum ipsum sit amet, maximus dui. Mauris fermentum elementum diam, eu tristique orci tincidunt non. Duis condimentum in odio non ullamcorper. Sed non maximus tortor. Curabitur at nibh quis lacus fringilla cursus ac id lacus."
+                FontSize="18"
+                />
 
             <Button
                 x:Name="CounterBtn"
-                Text="Click me"
-                SemanticProperties.Hint="Counts the number of times you click"
+                Text="Log Out"
+                FontSize="24"
                 Clicked="OnCounterClicked"
-                HorizontalOptions="Center" />
+                HorizontalOptions="Center"
+                Margin="20"/>
 
         </VerticalStackLayout>
     </ScrollView>

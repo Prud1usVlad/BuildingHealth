@@ -18,8 +18,15 @@ public partial class Login : ContentPage
     {
         try
         {
-            await _authService.LogInAsync(Email.Text, Password.Text);
-            App.Current.MainPage = Handler.MauiContext.Services.GetService<AppShell>();
+            if (await _authService.LogInAsync(Email.Text, Password.Text))
+            {
+                App.Current.MainPage = Handler.MauiContext.Services.GetService<AppShell>();
+            }
+            else
+            {
+                await DisplayAlert("Login failed", "User with such credentials don't have required permissions", "Try again");
+            }
+            
         }
         catch (Exception ex)
         {
