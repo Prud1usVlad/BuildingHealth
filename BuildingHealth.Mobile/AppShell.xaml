@@ -14,7 +14,7 @@
         </Tab>
         <Tab Title="Projects"
             Icon="https://cdn1.iconfinder.com/data/icons/jumpicon-basic-ui-glyph-1/32/-_Hamburger-Menu-More-Navigation-List-256.png">
-            <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+            <ShellContent ContentTemplate="{DataTemplate views:Projects}" />
         </Tab>
         <Tab Title="Info"
             Icon="https://cdn0.iconfinder.com/data/icons/leading-international-corporate-website-app-collec/16/Info-256.png">

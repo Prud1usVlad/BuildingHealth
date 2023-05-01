@@ -52,10 +52,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="ViewModels\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <MauiXaml Update="Pages\Loading.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

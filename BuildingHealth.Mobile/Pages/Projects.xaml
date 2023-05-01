@@ -1,11 +1,77 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:BuildingHealth.Mobile.ViewModels"
              x:Class="BuildingHealth.Mobile.Pages.Projects"
              Title="Projects">
-    <VerticalStackLayout>
+    <VerticalStackLayout
+        Spacing="25"
+        Padding="30,0"
+        BackgroundColor="{StaticResource color-surface-100}">
+        
         <Label 
-            Text="Projects"
-            FontSize="32" />
+            Text="Projects:"
+            FontSize="32" 
+            TextColor="{StaticResource White}"/>
+
+        <RefreshView 
+            Command="{Binding LoadUserProjects}"
+            RefreshColor="{StaticResource color-primary-500}"
+            IsRefreshing="{Binding IsListRefreshing}">
+
+            <CollectionView
+                ItemsSource="{Binding BuildingProjects}"
+                SelectionMode="Single"
+                x:Name="ProjectsCollection"
+                SelectionChangedCommand="{Binding ShowDetails}"
+                SelectionChangedCommandParameter="{Binding SelectedItem, Source={x:Reference ProjectsCollection}}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BackgroundColor="{StaticResource White}">
+                            <VerticalStackLayout>
+                                <Label 
+                                    Text="{Binding Name}"
+                                    FontSize="26"
+                                    TextColor="{StaticResource color-primary-500}" />
+                                <Label 
+                                    Text="{Binding Adress}"
+                                    FontSize="20"
+                                    TextColor="{StaticResource color-surface-500}"/>
+                                <Label 
+                                    Text="{Binding Description}"
+                                    FontSize="20"
+                                    TextColor="{StaticResource color-surface-500}"/>
+                                <HorizontalStackLayout>
+                                    <Label 
+                                        Text="From:"
+                                        FontSize="20"
+                                        TextColor="{StaticResource color-surface-600}"/>
+                                    <Label 
+                                        Text="{Binding WorkStartedDate}"
+                                        FontSize="20"
+                                        TextColor="{StaticResource color-surface-600}"/>
+                                    <Label 
+                                        Text="To:"
+                                        FontSize="20"
+                                        TextColor="{StaticResource color-surface-600}"/>
+                                    <Label 
+                                        Text="{Binding HandoverDate}"
+                                        FontSize="20"
+                                        TextColor="{StaticResource color-surface-600}"/>
+                                </HorizontalStackLayout>
+                                <Button 
+                                    Text="Details"
+                                    BackgroundColor="{StaticResource color-primary-500}"
+                                    TextColor="{StaticResource White}"
+                                    FontSize="26"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ProjectsViewModel}}, Path=ShowDetails}"
+                                    CommandParameter="{Binding Id}"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            
+        </RefreshView>
     </VerticalStackLayout>
 </ContentPage>

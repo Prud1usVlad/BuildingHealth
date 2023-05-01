@@ -3,6 +3,7 @@ using System.Text.Json;
 using BuildingHealth.Mobile.Services.Interfaces;
 using BuildingHealth.Mobile.Services;
 using BuildingHealth.Mobile.Pages;
+using BuildingHealth.Mobile.ViewModels;
 
 namespace BuildingHealth.Mobile
 {
@@ -33,6 +34,7 @@ namespace BuildingHealth.Mobile
 
         public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder mauiAppBuilder)
         {
+            mauiAppBuilder.Services.AddTransient<ProjectsViewModel>();
 
             return mauiAppBuilder;
         }
@@ -42,6 +44,7 @@ namespace BuildingHealth.Mobile
             mauiAppBuilder.Services.AddTransient<AppShell>();
             mauiAppBuilder.Services.AddTransient<MainPage>();
             mauiAppBuilder.Services.AddTransient<Login>();
+            mauiAppBuilder.Services.AddTransient<Projects>();
 
             return mauiAppBuilder;
         }
@@ -73,6 +76,7 @@ namespace BuildingHealth.Mobile
         public static MauiAppBuilder RegisterServices(this MauiAppBuilder mauiAppBuilder)
         {
             mauiAppBuilder.Services.AddTransient<IAuthService, AuthService>();
+            mauiAppBuilder.Services.AddTransient<IProjectService, ProjectService>();
 
             return mauiAppBuilder;
         }

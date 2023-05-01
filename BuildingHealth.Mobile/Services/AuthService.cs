@@ -33,16 +33,19 @@ namespace BuildingHealth.Mobile.Services
                 return false;
             }
 
-            Preferences.Set("UserId", responseResult.UserId);
-            Preferences.Set("Token", responseResult.Token);
+            Preferences.Default.Set("UserId", responseResult.Id);
+            Preferences.Default.Set("Token", responseResult.Token);
+
+            var id = Preferences.Default.Get("UserID", -1);
+            var token = Preferences.Default.Get("Token", -1);
 
             return true;
         }
 
         public async Task<bool> LogOutAsync()
         {
-            Preferences.Remove("UserId");
-            Preferences.Remove("Token");
+            SecureStorage.Remove("UserId");
+            SecureStorage.Remove("Token");
 
             return true;
         }

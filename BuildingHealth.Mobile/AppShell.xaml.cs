@@ -18,7 +18,9 @@ namespace BuildingHealth.Mobile
         {
             base.OnAppearing();
 
-            if (!Preferences.ContainsKey("UserId"))
+            var id = Preferences.Default.Get("UserId", -1);
+
+            if (id < 0)
             {
                 App.Current.MainPage = App.Current.Handler.MauiContext.Services.GetService<Login>();
             }
