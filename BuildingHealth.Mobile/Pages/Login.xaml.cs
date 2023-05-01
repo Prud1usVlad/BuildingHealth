@@ -1,32 +1,31 @@
+using BuildingHealth.Mobile.Services.Interfaces;
+
 namespace BuildingHealth.Mobile.Pages;
 
 public partial class Login : ContentPage
 {
-    public Login()
-	{
-		InitializeComponent();
+    private readonly IAuthService _authService;
 
-        
+    public Login(IAuthService authService)
+    {
+        InitializeComponent();
+
+        _authService = authService;
     }
 
 
     private async void LoginButton_Clicked(object sender, EventArgs e)
     {
-        if (await IsCredentialCorrect(Email.Text, Password.Text))
+        try
         {
-            await SecureStorage.SetAsync("hasAuth", "true");
-            await Shell.Current.GoToAsync("main");
+            await _authService.LogInAsync(Email.Text, Password.Text);
+            App.Current.MainPage = Handler.MauiContext.Services.GetService<AppShell>();
         }
-        else
+        catch (Exception ex)
         {
             await DisplayAlert("Login failed", "Email or password if invalid", "Try again");
         }
     }
 
-
-    private async Task<bool> IsCredentialCorrect(string username, string password)
-    {
-        return false;
-    }
 
 }

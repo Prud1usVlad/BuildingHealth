@@ -1,4 +1,7 @@
-﻿namespace BuildingHealth.Mobile
+﻿using BuildingHealth.Mobile.Pages;
+using Microsoft.Maui.Hosting;
+
+namespace BuildingHealth.Mobile
 {
     public partial class App : Application
     {

@@ -6,19 +6,6 @@
     xmlns:local="clr-namespace:BuildingHealth.Mobile"
     xmlns:views="clr-namespace:BuildingHealth.Mobile.Pages">
 
-
-    <!--Loading Page-->
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate views:Loading}"
-        Route="loading" />
-
-    <!--Login Page-->
-    <ShellContent
-        Title="Login"
-        ContentTemplate="{DataTemplate views:Login}"
-        Route="login"/>
-    
     <!--Main Page-->
     <TabBar Style="{StaticResource }">
         <Tab Title="Main"

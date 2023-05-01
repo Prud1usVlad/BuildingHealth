@@ -6,38 +6,11 @@
     <Application.Resources>
         <ResourceDictionary>
 
-            <!--DARK THEME PRIMARY COLORS-->
-
-            <Color x:Key="color-primary-100">#4caf50</Color>
-            <Color x:Key="color-primary-200">#63b863</Color>
-            <Color x:Key="color-primary-300">#79c176</Color>
-            <Color x:Key="color-primary-400">#8dca89</Color>
-            <Color x:Key="color-primary-500">#a0d39c</Color>
-            <Color x:Key="color-primary-600">#b4dcb0</Color> 
-            
-            <!--CSS DARK THEME SURFACE COLORS -->
-
-            <Color x:Key="color-surface-100">#121212</Color> 
-            <Color x:Key="color-surface-200">#282828</Color> 
-            <Color x:Key="color-surface-300">#3f3f3f</Color>
-            <Color x:Key="color-surface-400">#575757</Color>
-            <Color x:Key="color-surface-500">#717171</Color>
-            <Color x:Key="color-surface-600">#8b8b8b</Color>
-
-
-            <Style TargetType="TabBar">
-                <Setter Property="Shell.TabBarBackgroundColor"
-                    Value="{StaticResource color-surface-200}" />
-                <Setter Property="Shell.TabBarTitleColor"
-                    Value="{StaticResource color-primary-500}" />
-                <Setter Property="Shell.TabBarUnselectedColor"
-                    Value="{StaticResource White}" />
-            </Style>
-
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -1,24 +1,22 @@
-﻿namespace BuildingHealth.Mobile
+﻿using BuildingHealth.Mobile.Pages;
+using BuildingHealth.Mobile.Services.Interfaces;
+
+namespace BuildingHealth.Mobile
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
+        private readonly IAuthService _authService;
 
-        public MainPage()
+        public MainPage(IAuthService authService)
         {
             InitializeComponent();
+            _authService = authService;
         }
 
         private void OnCounterClicked(object sender, EventArgs e)
         {
-            count++;
-
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            _authService.LogOutAsync();
+            App.Current.MainPage = Handler.MauiContext.Services.GetService<Login>();
         }
     }
 }

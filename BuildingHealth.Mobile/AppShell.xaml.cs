@@ -10,6 +10,18 @@ namespace BuildingHealth.Mobile
 
             Routing.RegisterRoute("login", typeof(Login));
             Routing.RegisterRoute("main", typeof(MainPage));
+
+            
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            if (!Preferences.ContainsKey("UserId"))
+            {
+                App.Current.MainPage = App.Current.Handler.MauiContext.Services.GetService<Login>();
+            }
         }
     }
 }
