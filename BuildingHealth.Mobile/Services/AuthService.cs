@@ -28,7 +28,7 @@ namespace BuildingHealth.Mobile.Services
 
             var responseResult = JsonSerializer.Deserialize<AuthResponse>(stringResult, _jsonSerializerOptions);
 
-            if (responseResult.Role.ToLower() != "Architect")
+            if (responseResult.Role.ToLower() != "architect")
             {
                 return false;
             }
