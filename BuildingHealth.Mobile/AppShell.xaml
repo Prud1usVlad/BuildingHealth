@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="BuildingHealth.Mobile.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:BuildingHealth.Mobile"
+    xmlns:views="clr-namespace:BuildingHealth.Mobile.Pages">
+
+
+    <!--Loading Page-->
+    <ShellContent
+        Title="Home"
+        ContentTemplate="{DataTemplate views:Loading}"
+        Route="loading" />
+
+    <!--Login Page-->
+    <ShellContent
+        Title="Login"
+        ContentTemplate="{DataTemplate views:Login}"
+        Route="login"/>
+    
+    <!--Main Page-->
+    <TabBar Style="{StaticResource }">
+        <Tab Title="Main"
+            Icon="https://cdn4.iconfinder.com/data/icons/pictype-free-vector-icons/16/home-512.png">
+            <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+        </Tab>
+        <Tab Title="Projects"
+            Icon="https://cdn1.iconfinder.com/data/icons/jumpicon-basic-ui-glyph-1/32/-_Hamburger-Menu-More-Navigation-List-256.png">
+            <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+        </Tab>
+        <Tab Title="Info"
+            Icon="https://cdn0.iconfinder.com/data/icons/leading-international-corporate-website-app-collec/16/Info-256.png">
+            <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+        </Tab>
+        <Tab Title="Statistics"
+            Icon="https://cdn4.iconfinder.com/data/icons/font-awesome-regular/512/chart-bar-256.png">
+            <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+        </Tab>
+    </TabBar>
+
+</Shell>
