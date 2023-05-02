@@ -38,6 +38,7 @@ namespace BuildingHealth.Mobile
         {
             mauiAppBuilder.Services.AddTransient<ProjectsViewModel>();
             mauiAppBuilder.Services.AddTransient<ProjectDetailsViewModel>();
+            mauiAppBuilder.Services.AddTransient<StatisticsViewModel>();
 
             return mauiAppBuilder;
         }
