@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BuildingHealth.Mobile.Pages.Loading"
+             Title="Loading"
+             BackgroundColor="{StaticResource color-surface-100}"
+             NavigationPage.HasNavigationBar="False">
+    <ActivityIndicator IsRunning="true"
+                       Color="{StaticResource color-primary-500}"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"/>
+</ContentPage>
