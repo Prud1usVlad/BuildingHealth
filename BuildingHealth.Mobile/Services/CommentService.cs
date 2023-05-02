@@ -24,7 +24,7 @@ namespace BuildingHealth.Mobile.Services
         }
 
 
-        public async Task<List<Comment>> GetProjectComments(string projectId)
+        public async Task<List<Comment>> GetProjectComments(int projectId)
         {
             HttpResponseMessage response = await _httpClient.GetAsync("Comments/Project/" + projectId);
             response.EnsureSuccessStatusCode();

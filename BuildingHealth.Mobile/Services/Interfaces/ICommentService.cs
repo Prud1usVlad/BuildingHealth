@@ -9,7 +9,7 @@ namespace BuildingHealth.Mobile.Services.Interfaces
 {
     public interface ICommentService
     {
-        public Task<List<Comment>> GetProjectComments(string projectId);
+        public Task<List<Comment>> GetProjectComments(int projectId);
         public Task PostComment(Comment comment);
     }
 }
