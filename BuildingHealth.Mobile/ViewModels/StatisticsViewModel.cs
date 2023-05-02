@@ -42,6 +42,8 @@ namespace BuildingHealth.Mobile.ViewModels
                 OnPropertyChanged("IsLoading");
             }
         }
+        
+        
 
         public ICommand LoadData { get; private set; }
 
@@ -95,20 +97,44 @@ namespace BuildingHealth.Mobile.ViewModels
                         new LineSeries<double>
                         {
                             Values = chartData.Select(i => i.FirstValue),
-                            Name = "General state"
+                            Name = "General state",
+                            LegendShapeSize = 40,
+                            DataLabelsSize = 40,
+                            GeometrySize = 40,
                         },
                         new LineSeries<double>
                         {
                             Values = chartData.Select(i => i.SecondValue),
-                            Name = "Constructions state"
+                            Name = "Constructions state",
+                            LegendShapeSize = 40,
+                            DataLabelsSize = 40,
+                            GeometrySize = 40,
                         },
                         new LineSeries<double>
                         {
                             Values = chartData.Select(i => i.ThirdValue),
-                            Name = "Ground state"
+                            Name = "Ground state",
+                            LegendShapeSize = 40,
+                            DataLabelsSize = 40,
+                            GeometrySize = 40,
                         }
                     },
-                    XAxes = new List<Axis> { new Axis { Labels = chartData.Select(i => i.Label).ToList() } }
+                    XAxes = new List<Axis> 
+                    { 
+                        new Axis 
+                        { 
+                            Labels = chartData.Select(i => i.Label).ToList(), 
+                            TextSize = 40 
+                        } 
+                    },
+                    YAxes = new List<Axis> 
+                    { 
+                        new Axis 
+                        {
+                            TextSize = 60
+                        } 
+                    }
+                    
                 });
             }
 

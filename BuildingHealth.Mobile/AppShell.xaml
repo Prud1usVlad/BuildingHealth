@@ -18,7 +18,7 @@
         </Tab>
         <Tab Title="Statistics"
             Icon="https://cdn4.iconfinder.com/data/icons/font-awesome-regular/512/chart-bar-256.png">
-            <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+            <ShellContent ContentTemplate="{DataTemplate views:Statistics}" />
         </Tab>
     </TabBar>
 

@@ -50,6 +50,7 @@ namespace BuildingHealth.Mobile
             mauiAppBuilder.Services.AddTransient<Login>();
             mauiAppBuilder.Services.AddTransient<Projects>();
             mauiAppBuilder.Services.AddTransient<ProjectDetails>();
+            mauiAppBuilder.Services.AddTransient<Statistics>();
 
             return mauiAppBuilder;
         }
