@@ -80,7 +80,8 @@ namespace BuildingHealth.Mobile.ViewModels
 
         public async Task OnShowDetails(int projectId)
         {
-            Console.WriteLine("selected: " + projectId);
+            Preferences.Default.Set("SelectedProjectId", projectId);
+            await Shell.Current.GoToAsync("details");
         }
 
 

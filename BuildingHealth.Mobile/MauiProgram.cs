@@ -4,6 +4,7 @@ using BuildingHealth.Mobile.Services.Interfaces;
 using BuildingHealth.Mobile.Services;
 using BuildingHealth.Mobile.Pages;
 using BuildingHealth.Mobile.ViewModels;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace BuildingHealth.Mobile
 {
@@ -14,6 +15,7 @@ namespace BuildingHealth.Mobile
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseSkiaSharp(true)
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

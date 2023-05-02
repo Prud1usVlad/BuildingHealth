@@ -10,8 +10,9 @@ namespace BuildingHealth.Mobile
 
             Routing.RegisterRoute("login", typeof(Login));
             Routing.RegisterRoute("main", typeof(MainPage));
+            Routing.RegisterRoute("details", typeof(ProjectDetails));
 
-            
+
         }
 
         protected override void OnAppearing()
