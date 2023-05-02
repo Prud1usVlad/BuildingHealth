@@ -23,8 +23,8 @@ namespace BuildingHealth.Mobile.ViewModels
         private ObservableCollection<Recomendation> recomendations;
         private ObservableCollection<Comment> comments;
         private List<ISeries> series;
-        private string projectIdInput;
         private int selectedProjectId;
+        private string commentInput;
 
 
         public BuildingProject BuildingProject 
@@ -67,16 +67,16 @@ namespace BuildingHealth.Mobile.ViewModels
             }
         }
 
-        public string ProjectIdInput
+        public string CommentInput
         {
-            get { return projectIdInput; }
+            get { return commentInput; }
             set
             {
-                projectIdInput = value;
-                selectedProjectId = int.Parse(value);
-                OnPropertyChanged("ProjectIdInput");
+                commentInput = value;
+                OnPropertyChanged("CommentInput");
             }
         }
+        public SolidColorPaint LegendPaint { get; set; } = new SolidColorPaint(SKColors.White);
 
         public ICommand LoadData { get; protected set; }
         public ICommand LeaveComment { get; protected set; }
@@ -89,6 +89,9 @@ namespace BuildingHealth.Mobile.ViewModels
             buildingProject = new BuildingProject();
             recomendations = new ObservableCollection<Recomendation>();
             comments = new ObservableCollection<Comment>();
+
+            LoadData = new Command(async () => await OnLoadData());
+            LeaveComment = new Command(async () => await OnLeaveComment());
 
             series = new List<ISeries>
             {
@@ -125,7 +128,35 @@ namespace BuildingHealth.Mobile.ViewModels
             }
         }
 
-        public async Task<List<ISeries>> GetSeries()
+        public async Task OnLeaveComment()
+        {
+            try
+            {
+                var comment = new Comment()
+                {
+                    BuildingProjectId = selectedProjectId,
+                    UserId = Preferences.Default.Get("UserId", -1),
+                    Text = CommentInput,
+                    Date = DateTime.Now,
+                };
+
+                await _commentService.PostComment(comment);
+
+                var com = await _commentService.GetProjectComments(selectedProjectId);
+                Comments.Clear();
+
+                foreach (var c in com)
+                    Comments.Add(c);
+
+                CommentInput = "";
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Can't Send comment. See inner error: " + ex.Message, "OK");
+            }
+        }
+
+        private async Task<List<ISeries>> GetSeries()
         {
             var res = new List<ISeries>();
             var series = await _projectService.GetProjectLastStateAsync(selectedProjectId); 
@@ -135,8 +166,12 @@ namespace BuildingHealth.Mobile.ViewModels
                 res.Add(new PieSeries<double>
                 {
                     Values = new List<double> { r.FirstValue },
-                    InnerRadius = 50,
-                    Name = r.Label
+                    InnerRadius = 100,
+                    Name = r.Label,
+                    DataLabelsPaint = new SolidColorPaint(SKColors.White),
+                    DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Outer,
+                    DataLabelsFormatter = p => $"{r.Label}:\n {p.StackedValue.Share:P2}",
+                    DataLabelsSize = 30,
                 });
             }
 

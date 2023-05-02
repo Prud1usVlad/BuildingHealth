@@ -2,7 +2,10 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BuildingHealth.Mobile.Pages.ProjectDetails"
-             Title="ProjectDetails">
+             xmlns:vm="clr-namespace:BuildingHealth.Mobile.ViewModels"
+             Title="ProjectDetails"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui">
+
     <ScrollView>
         <VerticalStackLayout
             Spacing="25"
@@ -13,10 +16,175 @@
                 Text="Project details"
                 FontSize="32" 
                 TextColor="{StaticResource White}"/>
+
             <Label 
-                Text="{Binding Id}"
-                FontSize="32" 
+                Text="Current state:"
+                FontSize="24" 
                 TextColor="{StaticResource White}"/>
+
+            <lvc:PieChart
+                Series="{Binding Series}"
+                HeightRequest="200"
+                InitialRotation="90">
+            </lvc:PieChart>
+
+            <Label 
+                Text="Info:"
+                FontSize="24" 
+                TextColor="{StaticResource White}"/>
+
+            <Frame 
+                BackgroundColor="{StaticResource color-surface-200}"
+                BorderColor="{StaticResource color-surface-200}"
+                >
+                <StackLayout Spacing="10">
+                    <Label 
+                        Text="{Binding BuildingProject.Name}"
+                        FontSize="24"
+                        TextColor="{StaticResource color-primary-500}" />
+
+                    <Label 
+                        Text="{Binding BuildingProject.Adress}"
+                        FontSize="18"
+                        TextColor="{StaticResource White}"
+                        Margin="0,0,0,10"/>
+
+                    <Label 
+                        Text="{Binding BuildingProject.Description}"
+                        FontSize="16"
+                        TextColor="{StaticResource color-surface-600}" />
+
+                    <HorizontalStackLayout Margin="0,10,0,0">
+                        <Label 
+                            Text="From date: "
+                            FontSize="12"
+                            TextColor="{StaticResource color-surface-600}"/>
+                        <Label 
+                            Text="{Binding BuildingProject.WorkStartedDate}"
+                            FontSize="12"
+                            TextColor="{StaticResource color-surface-600}"/>
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout>
+                        <Label 
+                            Text="To date: "
+                            FontSize="12"
+                            TextColor="{StaticResource color-surface-600}"/>
+                        <Label 
+                            Text="{Binding BuildingProject.HandoverDate}"
+                            FontSize="12"
+                            TextColor="{StaticResource color-surface-600}"/>
+                    </HorizontalStackLayout>
+
+                </StackLayout>
+            </Frame>
+
+            <Label 
+                Text="Recomendations:"
+                FontSize="24" 
+                TextColor="{StaticResource White}"/>
+
+            <CollectionView
+                ItemsSource="{Binding Recomendations}"
+                SelectionMode="None" >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BackgroundColor="{StaticResource color-surface-200}"
+                               BorderColor="{StaticResource color-surface-200}"
+                               Margin="0,10">
+                            <VerticalStackLayout
+                                Spacing="5">
+                                <Label 
+                                    Text="{Binding Heading}"
+                                    FontSize="24"
+                                    TextColor="{StaticResource color-primary-500}" />
+                                <Label 
+                                    Text="{Binding Body}"
+                                    FontSize="18"
+                                    TextColor="{StaticResource White}"/>
+                                <HorizontalStackLayout>
+                                    <Label 
+                                        Text="Date: "
+                                        FontSize="14"
+                                        TextColor="{StaticResource color-surface-600}"/>
+                                    <Label 
+                                        Text="{Binding Date}"
+                                        FontSize="14"
+                                        TextColor="{StaticResource color-surface-600}"/>
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label 
+                Text="Comments:"
+                FontSize="24" 
+                TextColor="{StaticResource White}"/>
+
+            <CollectionView
+                ItemsSource="{Binding Comments}"
+                SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BackgroundColor="{StaticResource color-surface-200}"
+                               BorderColor="{StaticResource color-surface-200}"
+                               Margin="0,10">
+                            <VerticalStackLayout
+                                Spacing="5">
+                                <HorizontalStackLayout>
+                                    <Label 
+                                        Text="{Binding User.FirstName}"
+                                        FontSize="24"
+                                        TextColor="{StaticResource color-primary-500}"/>
+                                    <Label 
+                                        Text="{Binding User.SecondName}"
+                                        FontSize="24"
+                                        TextColor="{StaticResource color-primary-500}"/>
+                                </HorizontalStackLayout>
+                                <HorizontalStackLayout>
+                                    <Label 
+                                        Text="Posted at:"
+                                        FontSize="12"
+                                        TextColor="{StaticResource color-surface-600}"/>
+                                    <Label 
+                                        Text="{Binding Date}"
+                                        FontSize="12"
+                                        TextColor="{StaticResource color-surface-600}"/>
+                                </HorizontalStackLayout>
+                                
+                                <Label 
+                                    Text="{Binding Text}"
+                                    FontSize="18"
+                                    TextColor="{StaticResource White}"/>
+                                
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label 
+                Text="Leave new comment:"
+                FontSize="24" 
+                TextColor="{StaticResource White}"/>
+
+            <Entry
+                Text="{Binding CommentInput}"
+                BackgroundColor="{StaticResource color-surface-200}"
+                TextColor="{StaticResource White}"
+                FontSize="20"/>
+
+            <Button 
+                Text="Leave comment"
+                TextColor="{StaticResource White}"
+                BackgroundColor="{StaticResource color-primary-500}"
+                HorizontalOptions="CenterAndExpand"
+                FontSize="24"
+                Command="{Binding LeaveComment}"
+                Margin="0,0,0,20"/>
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

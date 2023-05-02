@@ -1,22 +1,22 @@
+using BuildingHealth.Mobile.ViewModels;
+
 namespace BuildingHealth.Mobile.Pages;
 
 public partial class ProjectDetails : ContentPage
 {
-	public int Id { get; set; }
+	public ProjectDetailsViewModel ViewModel { get; set; }
 
-	public ProjectDetails()
-	{
-		InitializeComponent();
-		BindingContext = this;
-
-		Id = Preferences.Default.Get("SelectedProjectId", -1);
-
-	}
+    public ProjectDetails(ProjectDetailsViewModel viewModel)
+    {
+        InitializeComponent();
+        ViewModel = viewModel;
+        BindingContext = ViewModel;
+    }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
 
-        Id = Preferences.Default.Get("SelectedProjectId", -1);
+        ViewModel.OnLoadData();
     }
 }
