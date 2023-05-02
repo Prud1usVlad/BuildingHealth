@@ -10,5 +10,7 @@ namespace BuildingHealth.Mobile.Services.Interfaces
     public interface IProjectService
     {
         public Task<List<BuildingProject>> GetUserProjectsAsync(int userId);
+        public Task<List<ChartPiece>> GetProjectLastStateAsync(int projectId);
+        public Task<List<ChartPiece>> GetProjectStatisticAsync(int projectId);
     }
 }

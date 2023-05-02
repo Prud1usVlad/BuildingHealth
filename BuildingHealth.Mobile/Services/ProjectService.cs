@@ -15,6 +15,26 @@ namespace BuildingHealth.Mobile.Services
             _jsonSerializerOptions = jsonSerializerOptions;
         }
 
+        public async Task<List<ChartPiece>> GetProjectLastStateAsync(int projectId)
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync("Charts/Sensors/Building/" + projectId);
+            response.EnsureSuccessStatusCode();
+
+            string stringResult = await response.Content.ReadAsStringAsync();
+
+            return JsonSerializer.Deserialize<List<ChartPiece>>(stringResult, _jsonSerializerOptions);
+        }
+
+        public async Task<List<ChartPiece>> GetProjectStatisticAsync(int projectId)
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync("Charts/Building/" + projectId);
+            response.EnsureSuccessStatusCode();
+
+            string stringResult = await response.Content.ReadAsStringAsync();
+
+            return JsonSerializer.Deserialize<List<ChartPiece>>(stringResult, _jsonSerializerOptions);
+        }
+
         public async Task<List<BuildingProject>> GetUserProjectsAsync(int userId)
         {
             HttpResponseMessage response = await _httpClient.GetAsync("BuildingProjects");
