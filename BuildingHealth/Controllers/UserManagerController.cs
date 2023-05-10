@@ -1,8 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using BuildingHealth.Core.ViewModels;
 using BuildingHealth.BLL.Interfaces;
+using BuildingHealth.Core.Models;
 using BuildingHealth.Security;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 
 namespace BuildingHealth.Controllers
 {
@@ -48,7 +53,7 @@ namespace BuildingHealth.Controllers
 
         [HttpGet]
         [Route("Users")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "IsAdmin")]
         public async Task<ActionResult<RegistrationViewModel>> GetAllUsers()
         {
             try
@@ -67,13 +72,33 @@ namespace BuildingHealth.Controllers
         {
             try
             {
+                var model = await _userManagerService.Register(body);
+                if (model?.Error != null)
+                {
+                    return BadRequest(model.Error);
+                }
 
-                return Ok(await _userManagerService.Register(body));
+                await Authenticate(model.User);
+
+                return Ok(JsonConvert.SerializeObject(model));
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        private async Task Authenticate(User user)
+        {
+            var claims = new List<Claim>
+            {
+                new (ClaimsIdentity.DefaultNameClaimType, user.Email),
+                new ("Admin", (user.Admin != null).ToString()),
+                new (ClaimTypes.MobilePhone, user.Phone)
+            };
+            var id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType,
+                ClaimsIdentity.DefaultRoleClaimType);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
     }
 }

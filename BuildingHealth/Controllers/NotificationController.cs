@@ -1,12 +1,14 @@
 ﻿using BuildingHealth.BLL.Interfaces;
 using BuildingHealth.Core.Models;
 using BuildingHealth.Core.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BuildingHealth.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class NotificationController : ControllerBase
     {
         private readonly INotificationService _service;

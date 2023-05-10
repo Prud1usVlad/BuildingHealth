@@ -13,6 +13,8 @@ using BuildingHealth.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Server.IISIntegration;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,37 +71,25 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-builder.Services.AddIdentity<User, IdentityRole>()
+
+builder.Services.AddIdentityCore<User>(options => { options.Password.RequireNonAlphanumeric = false; })
     .AddEntityFrameworkStores<BuildingHealthDBContext>()
-    .AddDefaultTokenProviders();
+    .AddSignInManager<SignInManager<User>>();
 
-builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-var test = builder.Configuration["Jwt:Key"];
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(o =>
-{
-    o.TokenValidationParameters = new TokenValidationParameters
+var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]));
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
     {
-        IssuerSigningKey = new SymmetricSecurityKey
-        (Encoding.UTF8.GetBytes(test)),
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        ValidateLifetime = false,
-        ValidateIssuerSigningKey = true,
-    };
-});
-
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
-});
-
+        options.LoginPath = new PathString("/api/UserManager/Register");
+    });
 builder.Services.AddTransient<IAuthorizationHandler, IsAdminRequirementHandler>();
 builder.Services.AddScoped<TokenService>();
+
+builder.Services.AddAuthorization(opts => {
+    opts.AddPolicy("IsAdmin",
+        policy => policy.Requirements.Add(new IsAdminRequirement(true)));
+});
 
 
 builder.Services.AddCors(options =>
@@ -132,7 +122,7 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetService<BuildingHealthDBContext>();
     var userManager = scope.ServiceProvider.GetService<UserManager<User>>();
-    await context.Database.MigrateAsync();
+    //await context.Database.MigrateAsync();
     await Seed.SeedData(context, userManager);
 }
 

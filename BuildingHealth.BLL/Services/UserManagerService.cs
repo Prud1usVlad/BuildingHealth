@@ -3,7 +3,6 @@ using BuildingHealth.Core.Models;
 using BuildingHealth.Core.ViewModels;
 using BuildingHealth.DAL;
 using BuildingHealth.Security;
-using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 
@@ -74,7 +73,7 @@ namespace BuildingHealth.BLL.Services
                 return GenerateResult(user);
             }
 
-            return null;
+            return new LoginResultViewModel { Error = result.Errors?.ToString() ?? string.Empty };
         }
 
         public async Task UpdateData(EditUserModel user)
@@ -107,6 +106,7 @@ namespace BuildingHealth.BLL.Services
             {
                 Token = token,
                 Role = user.Role,
+                User = user,
                 Id = user.Id
             };
         }

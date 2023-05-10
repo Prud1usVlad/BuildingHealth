@@ -8,6 +8,7 @@ namespace BuildingHealth.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ArchitectsController : ControllerBase
     {
         private readonly BuildingHealthDBContext _context;
@@ -19,10 +20,8 @@ namespace BuildingHealth.Controllers
 
         // GET: api/Architects
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<IEnumerable<Architect>>> GetArchitects()
         {
-           
             return await _context.Architects
                 .Include(a => a.IdNavigation)
                 .ToListAsync();
