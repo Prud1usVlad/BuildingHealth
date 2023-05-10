@@ -1,125 +1,113 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BuildingHealth.BLL.Interfaces;
+﻿using BuildingHealth.BLL.Interfaces;
 using BuildingHealth.Core.Models;
 using BuildingHealth.Core.ViewModels;
 using BuildingHealth.DAL;
+using BuildingHealth.Security;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace BuildingHealth.BLL.Services
 {
-    public class UserManagerService : IUserManagerServise
+    public class UserManagerService : IUserManagerService
     {
         private readonly BuildingHealthDBContext _context;
-        private readonly IConfiguration _configuration;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly TokenService _tokenService;
 
-        public UserManagerService(BuildingHealthDBContext context, IConfiguration configuration)
+        public UserManagerService(BuildingHealthDBContext context, TokenService tokenService, SignInManager<User> signInManager, UserManager<User> userManager)
         {
             _context = context;
-            _configuration = configuration;
+            _tokenService = tokenService;
+            _signInManager = signInManager;
+            _userManager = userManager;
         }
 
-        public LoginResultViewModel Login(LoginViewModel credentials)
+        public async Task<LoginResultViewModel> Login(LoginViewModel credentials)
         {
-            var user = GetUserIfValid(credentials);
+            var user = await _userManager.Users
+                .FirstOrDefaultAsync(user => user.Email == credentials.Email);
 
-            if (user is not null)
+            if (user == null) return null;
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, credentials.Password, false);
+            if (result.Succeeded)
+            {
                 return GenerateResult(user);
-            else 
-                throw new UnauthorizedAccessException("Authorization error");
+            }
 
+            return null;
         }
 
-        public LoginResultViewModel Register(RegistrationViewModel credentials)
+        public async Task<LoginResultViewModel> Register(RegistrationViewModel credentials)
         {
-            if (_context.Users.Any(u => u.Email == credentials.Email))
+            if (await _userManager.Users.AnyAsync(user => user.Email == credentials.Email))
+            {
                 throw new ArgumentException("User exists");
-            else if (credentials.Password != credentials.PasswordConfirm)
+            }
+
+            if (credentials.Password != credentials.PasswordConfirm)
+            {
                 throw new ArgumentException("Password not confirmed");
-            else
+
+            }
+
+            var user = new User
             {
-                var newUser = new User
+                UserName = credentials.UserName,
+                FirstName = credentials.FirstName,
+                Email = credentials.Email,
+                SecondName = credentials.SecondName,
+                Phone = credentials.Phone,
+                Role = nameof(Admin),
+                Admin = new Admin
                 {
-                    Email = credentials.Email,
-                    Role = nameof(Architect),
-                    FirstName = credentials.FirstName,
-                    SecondName = credentials.SecondName,
-                    Architect = new Architect
-                    {
-                        Password = credentials.Password,
-                    }
-                };
+                    Password = credentials.Password,
+                }
+            };
 
-                _context.Users.Add(newUser);
-                _context.SaveChanges();
+            var result = await _userManager.CreateAsync(user, credentials.Password);
 
-                return GenerateResult(newUser);
-            }
-        }
-
-        public void UpdateData(User user)
-        {
-            _context.Users.Update(user);
-            _context.SaveChanges();
-        }
-
-        private User GetUserIfValid(LoginViewModel credentials)
-        {
-            var user = _context.Users
-                .Include(u => u.Builder)
-                .Include(u => u.Architect)
-                .Include(u => u.Admin)
-                .FirstOrDefault(u => u.Email == credentials.Email);
-
-            if (user is null)
-                return null;
-            else
+            if (result.Succeeded)
             {
-                if (user.Admin is not null &&
-                    user.Admin.Password == credentials.Password)
-                    return user;
-                else if (user.Builder is not null &&
-                    user.Builder.Password == credentials.Password)
-                    return user;
-                else if (user.Architect is not null &&
-                    user.Architect.Password == credentials.Password)
-                    return user;
-                else 
-                    return null;
-
+                return GenerateResult(user);
             }
+
+            return null;
+        }
+
+        public async Task UpdateData(EditUserModel user)
+        {
+            var userForUpdate = await _context.Users.FirstOrDefaultAsync(x => x.Email == user.Email);
+
+            if (userForUpdate == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            userForUpdate.FirstName = user.FirstName;
+            userForUpdate.SecondName = user.SecondName;
+            userForUpdate.Phone = user.Phone;
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<User>> GetAllUsers()
+        {
+            return await _context.Users.ToListAsync();
         }
 
         private LoginResultViewModel GenerateResult(User user)
         {
-            string issuer = _configuration.GetValue<string>("Jwt:Issuer");
-            string audience = _configuration.GetValue<string>("Jwt:Audience");
-            byte[] key = Encoding.ASCII.GetBytes(_configuration.GetValue<string>("Jwt:Key"));
-            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Expires = DateTime.UtcNow.AddDays(1),
-                Issuer = issuer,
-                Audience = audience,
-                SigningCredentials = new SigningCredentials
-                    (new SymmetricSecurityKey(key),
-                        SecurityAlgorithms.HmacSha512Signature)
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var jwtToken = tokenHandler.WriteToken(token);
+            var token = _tokenService.CreateToken(user);
+            user.Token = token;
 
             return new LoginResultViewModel
             {
-                Token = jwtToken,
+                Token = token,
                 Role = user.Role,
-                Id = user.Id,
+                Id = user.Id
             };
         }
     }

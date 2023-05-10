@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BuildingHealth.Core.Models;
 using BuildingHealth.DAL;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BuildingHealth.Controllers
 {
@@ -23,8 +19,10 @@ namespace BuildingHealth.Controllers
 
         // GET: api/Architects
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Architect>>> GetArchitects()
         {
+           
             return await _context.Architects
                 .Include(a => a.IdNavigation)
                 .ToListAsync();

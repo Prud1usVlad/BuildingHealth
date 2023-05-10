@@ -23,16 +23,14 @@ namespace BuildingHealth.BLL.Services
             _chartDataService = chartDataService;
         }
 
-        public async Task<List<RecomendationViewModel>> GetRecomendations(int buildingId)
+        public async Task<List<RecomendationViewModel>> GetRecommendations(int buildingId)
         {
             var building = await _dbContext.BuildingProjects
                 .Include(p => p.SensorsResponses)
                 .ThenInclude(r => r.MainCostructionStates)
                 .FirstAsync(b => b.Id == buildingId);
 
-            var response = building.SensorsResponses
-                .OrderByDescending(r => r.Date)
-                .FirstOrDefault();
+            var response = building.SensorsResponses.MaxBy(r => r.Date);
 
             if (response is null)
             {

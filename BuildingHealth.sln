@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingHealth.BLL", "Build
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingHealth.DAL", "BuildingHealth.DAL\BuildingHealth.DAL.csproj", "{1328C3A3-4CD6-4B49-B121-C1653EF8FF76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingHealth.Mobile", "BuildingHealth.Mobile\BuildingHealth.Mobile.csproj", "{B2F3D0B0-91E4-4061-8C29-DBB506254A7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingHealth.Mobile", "BuildingHealth.Mobile\BuildingHealth.Mobile.csproj", "{B2F3D0B0-91E4-4061-8C29-DBB506254A7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,7 +36,6 @@ Global
 		{1328C3A3-4CD6-4B49-B121-C1653EF8FF76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1328C3A3-4CD6-4B49-B121-C1653EF8FF76}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B2F3D0B0-91E4-4061-8C29-DBB506254A7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2F3D0B0-91E4-4061-8C29-DBB506254A7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2F3D0B0-91E4-4061-8C29-DBB506254A7E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{B2F3D0B0-91E4-4061-8C29-DBB506254A7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2F3D0B0-91E4-4061-8C29-DBB506254A7E}.Release|Any CPU.Build.0 = Release|Any CPU

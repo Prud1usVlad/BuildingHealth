@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using BuildingHealth.Core.ViewModels;
 using BuildingHealth.BLL.Interfaces;
+using BuildingHealth.Security;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BuildingHealth.Controllers
 {
@@ -9,11 +10,11 @@ namespace BuildingHealth.Controllers
     [ApiController]
     public class UserManagerController : ControllerBase
     {
-        private readonly IUserManagerServise _userManagerServise;
+        private readonly IUserManagerService _userManagerService;
 
-        public UserManagerController(IUserManagerServise userManagerServise)
+        public UserManagerController(IUserManagerService userManagerService)
         {
-            _userManagerServise = userManagerServise;
+            _userManagerService = userManagerService;
         }
 
         [HttpPost]
@@ -22,7 +23,37 @@ namespace BuildingHealth.Controllers
         {
             try
             {
-                return Ok(_userManagerServise.Login(body));
+                return Ok(await _userManagerService.Login(body));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("Update")]
+        public async Task<ActionResult<RegistrationViewModel>> Edit([FromBody] EditUserModel body)
+        {
+            try
+            {
+                await _userManagerService.UpdateData(body);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("Users")]
+        [Authorize(Policy = "Admin")]
+        public async Task<ActionResult<RegistrationViewModel>> GetAllUsers()
+        {
+            try
+            {
+                return Ok(await _userManagerService.GetAllUsers());
             }
             catch (Exception ex)
             {
@@ -36,13 +67,13 @@ namespace BuildingHealth.Controllers
         {
             try
             {
-                return Ok(_userManagerServise.Register(body));
+
+                return Ok(await _userManagerService.Register(body));
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-
     }
 }

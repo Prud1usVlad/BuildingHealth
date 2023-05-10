@@ -22,7 +22,7 @@ namespace BuildingHealth.Controllers
         {
             try
             {
-                return await _recomendationService.GetRecomendations(buildingId);
+                return await _recomendationService.GetRecommendations(buildingId);
             }
             catch (Exception ex)
             {

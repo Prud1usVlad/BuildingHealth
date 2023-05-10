@@ -1,11 +1,10 @@
 ﻿namespace BuildingHealth.Core.ViewModels
 {
-    public class RegistrationViewModel : LoginViewModel
+    public class EditUserModel
     {
-        public string PasswordConfirm { get; set; }
+        public string Email { get; set; }
         public string Phone { get; set; }
         public string FirstName { get; set; }
         public string SecondName { get; set; }
-        public string UserName { get; set; }
     }
 }

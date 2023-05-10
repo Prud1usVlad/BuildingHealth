@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -6,11 +7,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using BuildingHealth.BLL.Services;
 using BuildingHealth.BLL.Interfaces;
+using BuildingHealth.Core.Models;
 using BuildingHealth.DAL;
-
-const string audience = "https://localhost:7070/";
-const string issuer = "https://localhost:7070/";
-const string key = "asdaoiu12pasdjhijbbbIUycyvkjVJn$291281GUIoi1239q23";
+using BuildingHealth.Security;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,15 +22,16 @@ builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddDbContext<BuildingHealthDBContext>(options =>
-    options.UseSqlServer("Data Source=PRUDIUSVLADPC\\DEV;Initial Catalog=BuildingHealthDB;Integrated Security=True"));
+    options.UseSqlServer("Data Source=ZINCHENKO-D2\\SQL2016;Initial Catalog=BuildingHealthDB;Integrated Security=True"));
 
 
-builder.Services.AddScoped<IUserManagerServise, UserManagerService>();
+builder.Services.AddScoped<IUserManagerService, UserManagerService>();
 builder.Services.AddScoped<IRecomendationService, RecomendationService>();
 builder.Services.AddScoped<IChartDataService, ChartDataService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IUserAccessor, UserAccessor>();
 
-
-
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers().AddNewtonsoftJson(x =>
  x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
@@ -66,7 +69,12 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<BuildingHealthDBContext>()
+    .AddDefaultTokenProviders();
 
+builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+var test = builder.Configuration["Jwt:Key"];
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -76,18 +84,23 @@ builder.Services.AddAuthentication(options =>
 {
     o.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey
-        (Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
-        ValidateIssuer = true,
-        ValidateAudience = true,
+        (Encoding.UTF8.GetBytes(test)),
+        ValidateIssuer = false,
+        ValidateAudience = false,
         ValidateLifetime = false,
         ValidateIssuerSigningKey = true,
     };
 });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
+});
+
+builder.Services.AddTransient<IAuthorizationHandler, IsAdminRequirementHandler>();
+builder.Services.AddScoped<TokenService>();
+
 
 builder.Services.AddCors(options =>
 {
@@ -114,5 +127,14 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.UseCors("AllowAllHeaders");
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetService<BuildingHealthDBContext>();
+    var userManager = scope.ServiceProvider.GetService<UserManager<User>>();
+    await context.Database.MigrateAsync();
+    await Seed.SeedData(context, userManager);
+}
+
 
 app.Run();

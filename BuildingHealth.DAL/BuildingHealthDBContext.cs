@@ -25,6 +25,7 @@ namespace BuildingHealth.DAL
         public virtual DbSet<MainCostructionState> MainCostructionStates { get; set; } = null!;
         public virtual DbSet<SensorsResponse> SensorsResponses { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<Notification> Notifications { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

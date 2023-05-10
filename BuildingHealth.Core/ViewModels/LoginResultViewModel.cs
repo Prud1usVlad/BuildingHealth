@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BuildingHealth.Core.ViewModels
+﻿namespace BuildingHealth.Core.ViewModels
 {
     public class LoginResultViewModel
     {
