@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BuildingHealth.Mobile.Pages.Statistics"
+             Title="Statistics"
+             xmlns:vm="clr-namespace:BuildingHealth.Mobile.ViewModels"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui">
+    <VerticalStackLayout
+        Spacing="25"
+        Padding="30,0"
+        BackgroundColor="{StaticResource color-surface-100}">
+        <Label 
+            Text="Projects statistics:"
+            FontSize="32" 
+            TextColor="{StaticResource White}"/>
+
+        <RefreshView
+            Command="{Binding LoadData}"
+            IsRefreshing="{Binding IsLoading}"
+            RefreshColor="{StaticResource color-primary-500}"
+            HeightRequest="500">
+            <CollectionView
+                ItemsSource="{Binding PageItems}"
+                SelectionMode="None" >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+
+                            <ScrollView
+                                Orientation="Both">
+                                <lvc:CartesianChart
+                                    Series="{Binding Series}"
+                                    XAxes="{Binding XAxes}"
+                                    YAxes="{Binding YAxes}"
+                                    LegendPosition="Bottom"
+                                    HeightRequest="400"
+                                    WidthRequest="800"
+                                    BackgroundColor="{StaticResource color-surface-100}"
+                                    TooltipTextSize="30"
+                                    TooltipTextPaint="{Binding TextPaint}"
+                                    LegendTextPaint="{Binding TextPaint}"
+                                    LegendTextSize="60">
+                                    
+                                </lvc:CartesianChart>
+                            </ScrollView>
+
+                            <Label 
+                                Text="{Binding BuildingProject.Name}"
+                                FontSize="24"
+                                TextColor="{StaticResource color-primary-500}" />
+
+                            <Label 
+                                Text="{Binding BuildingProject.Adress}"
+                                FontSize="18"
+                                TextColor="{StaticResource White}"
+                                Margin="0,0,0,10"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+
+
+    </VerticalStackLayout>
+</ContentPage>

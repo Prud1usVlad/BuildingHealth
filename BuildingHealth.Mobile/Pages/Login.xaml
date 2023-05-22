@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BuildingHealth.Mobile.Pages.Login"
+             Title="Login"
+             NavigationPage.HasNavigationBar="False">
+    <VerticalStackLayout BackgroundColor="{StaticResource color-surface-100}" 
+                         Padding="30">
+        <Label 
+            Text="Please sign in"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" 
+            TextColor="{StaticResource White}"
+            FontSize="24"
+            Margin="0,70,0,30"/>
+
+        <Entry x:Name="Email"
+               Placeholder="Enter Email..."
+               Keyboard="Email"
+               VerticalOptions="Center" 
+               BackgroundColor="{StaticResource color-surface-300}"
+               TextColor="{StaticResource White}"
+               Margin="20"/>
+
+        <Entry x:Name="Password"
+               Placeholder="Enter Password..."
+               Keyboard="Default"
+               VerticalOptions="Center" 
+               BackgroundColor="{StaticResource color-surface-300}"
+               TextColor="{StaticResource White}"
+               Margin="20"/>
+
+        <Button Text="Submit"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center"
+                BackgroundColor="{StaticResource color-surface-200 }"
+                TextColor="{StaticResource color-primary-500}"
+                FontSize="20"
+                Clicked="LoginButton_Clicked"/>
+    </VerticalStackLayout>
+</ContentPage>
