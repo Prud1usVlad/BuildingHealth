@@ -21,7 +21,7 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 
 builder.Services.AddDbContext<BuildingHealthDBContext>(options =>
     options.UseSqlServer("Data Source=PRUDIUSVLADPC\\DEV;Initial Catalog=BuildingHealthDB;Integrated Security=True"));
-
+//Data Source=178.165.88.5\\DEV;Initial Catalog=BuildingHealthDB;User ID=user1;Password=1111
 
 builder.Services.AddScoped<IUserManagerServise, UserManagerService>();
 builder.Services.AddScoped<IRecomendationService, RecomendationService>();

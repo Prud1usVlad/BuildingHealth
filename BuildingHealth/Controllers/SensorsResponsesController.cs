@@ -82,6 +82,7 @@ namespace BuildingHealth.Controllers
         [HttpPost]
         public async Task<ActionResult<SensorsResponse>> PostSensorsResponse(SensorsResponse sensorsResponse)
         {
+            sensorsResponse.Date = DateTime.Now;
             _context.SensorsResponses.Add(sensorsResponse);
             await _context.SaveChangesAsync();
 
