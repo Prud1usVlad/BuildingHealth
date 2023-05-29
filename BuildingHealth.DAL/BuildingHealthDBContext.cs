@@ -135,7 +135,8 @@ namespace BuildingHealth.DAL
                 entity.HasOne(d => d.BuildingProject)
                     .WithMany(p => p.SensorsResponses)
                     .HasForeignKey(d => d.BuildingProjectId)
-                    .HasConstraintName("FK_SensorsResponse_BuildingProject");
+                    .HasConstraintName("FK_SensorsResponse_BuildingProject")
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -153,7 +154,10 @@ namespace BuildingHealth.DAL
 
             OnModelCreatingPartial(modelBuilder);
         }
-
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
+        }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

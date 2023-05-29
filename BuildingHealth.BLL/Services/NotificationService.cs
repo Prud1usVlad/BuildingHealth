@@ -8,7 +8,7 @@ using System.Collections.Concurrent;
 
 namespace BuildingHealth.BLL.Services
 {
-    public class NotificationService : INotificationService, IDisposable
+    public class NotificationService : INotificationService
     {
         private readonly BuildingHealthDBContext _context;
         private readonly IMapper _mapper;
@@ -27,18 +27,20 @@ namespace BuildingHealth.BLL.Services
             {
                 throw new Exception("Building not found");
             }
-
-            var maxDeformationLevel = _context.SensorsResponses
+            var sensors = _context.SensorsResponses
                 .Include(r => r.MainCostructionStates)
-                .Select(x => x.MainCostructionStates.Where(y => y.Id == buildingId)
-                    .Select(s => s.DeformationLevel))
-                .Max();
+                .ToList();
+            var maxDeformationLevel = sensors
+                .Where(x => x.BuildingProjectId == buildingId)
+                .Select(x => x.MainCostructionStates.Select(y => y.DeformationLevel))
+                .FirstOrDefault()
+                ?.Max(x => x) ?? 0;
 
             var groundWaterLevel = _context.SensorsResponses
                 .Include(r => r.MainCostructionStates)
                 .Where(r => r.BuildingProjectId == buildingId)
                 .Select(x => x.GroundWaterLevel)
-                .Max();
+                .Max() ?? 0;
 
             var notification = new Notification
             {
@@ -48,12 +50,7 @@ namespace BuildingHealth.BLL.Services
                 BuildingProject = building
             };
 
-            _timers.Add(new Timer(x =>
-            {
-                SaveNotification(notification);
-
-            }, null, TimeSpan.Zero, TimeSpan.FromHours(24)));
-
+            SaveNotification(notification);
 
             return _mapper.Map<NotificationViewModel>(notification);
         }
@@ -69,15 +66,6 @@ namespace BuildingHealth.BLL.Services
             {
                 _context.Notifications.Add(model);
                 _context.SaveChanges();
-            }
-        }
-
-        public void Dispose()
-        {
-            _context.Dispose();
-            foreach (var timer in _timers)
-            {
-                timer.Dispose();
             }
         }
     }

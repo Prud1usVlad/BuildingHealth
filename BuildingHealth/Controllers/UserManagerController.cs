@@ -28,7 +28,10 @@ namespace BuildingHealth.Controllers
         {
             try
             {
-                return Ok(await _userManagerService.Login(body));
+                var result = await _userManagerService.Login(body);
+                await Authenticate(result.User);
+
+                return Ok(result);
             }
             catch (Exception ex)
             {

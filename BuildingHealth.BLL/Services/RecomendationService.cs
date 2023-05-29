@@ -70,7 +70,7 @@ namespace BuildingHealth.BLL.Services
                 {
                     Heading = "High ground acidity",
                     Body = "You should decrease acidity level. You can use dolomite flour, lime tuff and stuff like that.",
-                    Date = (DateTime)response.Date
+                    Date = response.Date ?? DateTime.Now
                 });
             }
             else if (response.GroundAcidityLevel == 5) 
@@ -79,7 +79,7 @@ namespace BuildingHealth.BLL.Services
                 {
                     Heading = "Dangerous ground acidity",
                     Body = "You should decrease acidity level as fast as you can!. You can use dolomite flour, lime tuff and stuff like that.",
-                    Date = (DateTime)response.Date
+                    Date = response.Date ?? DateTime.Now
                 });
             }
             else if (response.GroundWaterLevel == 3
@@ -89,7 +89,7 @@ namespace BuildingHealth.BLL.Services
                 {
                     Heading = "High ground water level",
                     Body = "You should decrease water level. You can build drainages, or try installing light or ejector wellpoints.",
-                    Date = (DateTime)response.Date
+                    Date = response.Date ?? DateTime.Now
                 });
             }
             else if (response.GroundAcidityLevel == 5)
@@ -98,7 +98,7 @@ namespace BuildingHealth.BLL.Services
                 {
                     Heading = "Dangerous ground water level",
                     Body = "You should decrease water level as fast as you can!. You can build drainages, or try installing light or ejector wellpoints.",
-                    Date = (DateTime)response.Date
+                    Date = response.Date ?? DateTime.Now
                 });
             }
 
@@ -112,7 +112,7 @@ namespace BuildingHealth.BLL.Services
                     Heading = "Dangerous level of deformation on main costructions",
                     Body = "Something went wrong with your constructions. A Dangerous level of" +
                     " compression and deformation detected. You should check it, but never forget about your safety",
-                    Date = (DateTime)response.Date
+                    Date = response.Date ?? DateTime.Now
                 });
             }
             else if (constructionsState < 50)
@@ -122,7 +122,7 @@ namespace BuildingHealth.BLL.Services
                     Heading = "High level of deformation on main costructions",
                     Body = "A High level of compression and deformation detected." +
                     " You should check it, but never forget about your safety",
-                    Date = (DateTime)response.Date
+                    Date = response.Date ?? DateTime.Now
                 });
             }
 

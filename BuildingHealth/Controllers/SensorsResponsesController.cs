@@ -87,12 +87,14 @@ namespace BuildingHealth.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSensorsResponse(int id)
         {
-            var sensorsResponse = await _context.SensorsResponses.FindAsync(id);
+            var sensorsResponse = await _context.SensorsResponses
+                .Include(x => x.MainCostructionStates)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
             if (sensorsResponse == null)
             {
                 return NotFound();
             }
-
             _context.SensorsResponses.Remove(sensorsResponse);
             await _context.SaveChangesAsync();
 
