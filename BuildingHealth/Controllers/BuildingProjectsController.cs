@@ -8,7 +8,6 @@ namespace BuildingHealth.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class BuildingProjectsController : ControllerBase
     {
         private readonly BuildingHealthDBContext _context;

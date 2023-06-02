@@ -59,10 +59,18 @@ namespace BuildingHealth.BLL.Services
                 Email = credentials.Email,
                 SecondName = credentials.SecondName,
                 Phone = credentials.Phone,
-                Role = nameof(Admin),
+                Role = nameof(Architect),
+                Architect = new Architect
+                {
+                    Password = credentials.Password,
+                },
                 Admin = new Admin
                 {
                     Password = credentials.Password,
+                },
+                Builder = new Builder
+                {
+                    Password = credentials.Password
                 }
             };
 

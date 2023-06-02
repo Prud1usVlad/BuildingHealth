@@ -1,10 +1,6 @@
-import ReactDOM from "react-dom";
 import { useTranslation, Trans } from "react-i18next";
-import { Link, redirect } from "react-router-dom";
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import React, { useState, useEffect } from 'react';
-import Modal from 'react-bootstrap/Modal';
-import axios from "axios";
 
 const API_URL = "http://localhost:5254/api/";
 const token = localStorage.getItem("token");
@@ -26,7 +22,7 @@ export default function BuildingsView(props) {
         onSelect: props.OnRowSelect,
     };
     const dateFormatter = (cell, row) => {
-        return cell.split("T")[0];
+        return cell?.split("T")[0];
     }
  
     return(

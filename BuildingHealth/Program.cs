@@ -24,7 +24,7 @@ builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddDbContext<BuildingHealthDBContext>(options =>
-    options.UseSqlServer("Data Source=ZINCHENKO-D2\\SQL2016;Initial Catalog=BuildingHealthDB;Integrated Security=True"));
+    options.UseSqlServer("Server=tcp:buildinghealth.database.windows.net,1433;Initial Catalog=buildingHealth;Persist Security Info=False;User ID=AppUser;Password=Pa$$word2022;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
 
 
 builder.Services.AddScoped<IUserManagerService, UserManagerService>();

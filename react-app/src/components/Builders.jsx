@@ -192,12 +192,12 @@ export default function Builders() {
                             }
                             else {
 
-                                console.log(selected.handoverDate.split("T")[0]);
+                                console.log(selected.handoverDate?.split("T")[0]);
 
                                 let newObj = {};
                                 Object.assign(newObj, selected);
-                                newObj.handoverDate = selected.handoverDate.split("T")[0];
-                                newObj.workStartedDate = selected.workStartedDate.split("T")[0]
+                                newObj.handoverDate = selected.handoverDate?.split("T")[0];
+                                newObj.workStartedDate = selected.workStartedDate?.split("T")[0]
 
                                 setSelected(newObj);
                                 setShow(true);

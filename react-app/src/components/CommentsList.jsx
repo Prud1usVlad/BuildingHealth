@@ -12,7 +12,7 @@ export default function CommentsList(props) {
     return (
         <div>
             {props.comments.map( comment => (
-            <div key={comment.id} class="toast m-3">
+            <div key={comment.id} class="toast m-1">
                 <div class="toast-header">
                     <i class="fa-solid fa-comment"></i>
                     <strong class="me-auto">{comment.user.firstName + " " + comment.user.secondName}</strong>

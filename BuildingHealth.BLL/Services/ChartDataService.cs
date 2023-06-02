@@ -90,7 +90,7 @@ namespace BuildingHealth.BLL.Services
         {
             var entry = (await GetSensorsResultData(response.Id)).First();
 
-            entry.Label = response.Date.Value.Date.ToString();
+            entry.Label = response?.Date?.ToString() ?? DateTime.Now.ToString();
             entry.SecondValue = GetConstructionsState(response.MainCostructionStates);
             entry.ThirdValue = 0;
 
