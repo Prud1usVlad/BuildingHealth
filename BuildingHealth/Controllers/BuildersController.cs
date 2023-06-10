@@ -8,7 +8,6 @@ namespace BuildingHealth.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class BuildersController : ControllerBase
     {
         private readonly BuildingHealthDBContext _context;
@@ -60,7 +59,7 @@ namespace BuildingHealth.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(builder).State = EntityState.Modified;
+            _context.Builders.Update(builder);
 
             try
             {
@@ -86,6 +85,7 @@ namespace BuildingHealth.Controllers
         [HttpPost]
         public async Task<ActionResult<Builder>> PostBuilder(Builder builder)
         {
+            _context.Users.Add(builder.IdNavigation);
             _context.Builders.Add(builder);
             await _context.SaveChangesAsync();
 

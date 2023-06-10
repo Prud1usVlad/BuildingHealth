@@ -46,9 +46,12 @@ namespace BuildingHealth.BLL.Services
                 .ThenInclude(r => r.MainCostructionStates)
                 .FirstAsync(b => b.Id == buildingId);
 
-            var response = building.SensorsResponses
-                .OrderByDescending(r => r.Date)
-                .FirstOrDefault();
+            var response = building.SensorsResponses.MaxBy(r => r.Date);
+
+            if (response == null)
+            {
+                return new List<ChartEntries>();
+            }
 
             return await GetSensorsResultData(response.Id);
         }

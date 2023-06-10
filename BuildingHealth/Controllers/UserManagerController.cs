@@ -29,7 +29,7 @@ namespace BuildingHealth.Controllers
             try
             {
                 var result = await _userManagerService.Login(body);
-                await Authenticate(result.User);
+                await Authenticate(result?.User);
 
                 return Ok(result);
             }

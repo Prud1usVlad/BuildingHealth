@@ -57,7 +57,7 @@ namespace BuildingHealth.Mobile
 
         public static MauiAppBuilder RegisterHttpClient(this MauiAppBuilder mauiAppBuilder)
         {
-            Uri apiAddress = new Uri("http://localhost:5254/api/");
+            Uri apiAddress = new Uri("https://buildinghealth20230602231022.azurewebsites.net/api/");
 
             mauiAppBuilder.Services.AddTransient<HttpClient>(p =>
             {

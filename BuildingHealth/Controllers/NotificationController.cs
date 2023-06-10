@@ -8,7 +8,6 @@ namespace BuildingHealth.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class NotificationController : ControllerBase
     {
         private readonly INotificationService _service;

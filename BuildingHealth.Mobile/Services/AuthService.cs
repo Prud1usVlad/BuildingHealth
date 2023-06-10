@@ -37,7 +37,7 @@ namespace BuildingHealth.Mobile.Services
             Preferences.Default.Set("Token", responseResult.Token);
 
             var id = Preferences.Default.Get("UserID", -1);
-            var token = Preferences.Default.Get("Token", -1);
+            var token = Preferences.Default.Get("Token", "");
 
             return true;
         }

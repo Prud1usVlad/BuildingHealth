@@ -53,8 +53,8 @@ export default function CommentsFeed(props) {
                     <CommentsList comments={comments}/>
                 </div>
             </div>
-            <div class="row bg-light">
-                <div class="col-9">
+            <div class="row bg-light" fixed="true">
+                <div class="col-5">
                     <textarea class="form-control" 
                                 rows={3}
                                 placeholder={t("comment") + "..."} 

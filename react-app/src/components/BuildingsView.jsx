@@ -14,8 +14,6 @@ export default function BuildingsView(props) {
         i18n.changeLanguage(lng);
     };
 
-    
-
     const selectRowProp = {
         mode: 'radio',
         clickToSelect: true,

@@ -1,10 +1,6 @@
-import ReactDOM from "react-dom";
 import { useTranslation, Trans } from "react-i18next";
-import { Link, redirect } from "react-router-dom";
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import React, { useState, useEffect } from 'react';
-import Modal from 'react-bootstrap/Modal';
-import axios from "axios";
 
 const API_URL = "http://localhost:5254/api/";
 const token = localStorage.getItem("token");
@@ -38,6 +34,9 @@ export default function BuildersView(props) {
         return row.idNavigation.email;
     }
 
+    const phoneFormatter = (cell, row) => {
+        return row.idNavigation.phone;
+    }
 
 
     return(
@@ -49,7 +48,7 @@ export default function BuildersView(props) {
                     <TableHeaderColumn dataField='idNavigation.firstName' dataFormat={ firstNameFormatter }><Trans i18nKey="name"/></TableHeaderColumn>
                     <TableHeaderColumn dataField='idNavigation.secondName' dataFormat={ secondNameFormatter }><Trans i18nKey="lastName"/></TableHeaderColumn>
                     <TableHeaderColumn dataField='idNavigation.email' dataFormat={ emailFormatter }><Trans i18nKey="email"/></TableHeaderColumn>
-                    <TableHeaderColumn dataField='phone' ><Trans i18nKey="phone"/></TableHeaderColumn>
+                    <TableHeaderColumn dataField='idNavigation.phone' dataFormat={ phoneFormatter }><Trans i18nKey="phone"/></TableHeaderColumn>
                 </BootstrapTable>
             </div>
 

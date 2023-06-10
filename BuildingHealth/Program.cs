@@ -22,9 +22,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-
+var connectionString = builder.Configuration["ConnectionStrings:Key"];
 builder.Services.AddDbContext<BuildingHealthDBContext>(options =>
-    options.UseSqlServer("Server=tcp:buildinghealth.database.windows.net,1433;Initial Catalog=buildingHealth;Persist Security Info=False;User ID=AppUser;Password=Pa$$word2022;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
+    options.UseSqlServer(connectionString));
 
 
 builder.Services.AddScoped<IUserManagerService, UserManagerService>();
@@ -106,7 +106,7 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -122,8 +122,8 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetService<BuildingHealthDBContext>();
     var userManager = scope.ServiceProvider.GetService<UserManager<User>>();
-    //await context.Database.MigrateAsync();
-    await Seed.SeedData(context, userManager);
+    await context.Database.MigrateAsync();
+    Seed.SeedData(context, userManager);
 }
 
 

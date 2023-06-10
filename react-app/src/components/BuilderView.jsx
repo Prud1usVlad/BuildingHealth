@@ -1,5 +1,6 @@
 import NavigationPanel from "./NavigationPanel"
 import BuildersView from "./BuildersView";
+import ReactDOM from "react-dom";
 import { useTranslation, Trans } from "react-i18next";
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
@@ -41,9 +42,8 @@ export default function BuilderView() {
     useEffect(() => {
         async function fetchData() {
             let responce = await axios.get(API_URL + "Builders", headers);
-            console.log(responce.data);
+            console.log(responce);
             setBuilders(responce.data);
-            //setSelected(responce.data[0]);
             setUpdate(false);
         }
 
@@ -51,8 +51,6 @@ export default function BuilderView() {
             fetchData();
         
     }, [update]);
-
-
 
     const onDelete = async () => {
         if (selected.id !== 0) {
@@ -87,14 +85,17 @@ export default function BuilderView() {
     const updateSelected = (field, value) => {
         let newObj = {};
         Object.assign(newObj, selected);
-        newObj["idNavigation"][field] = value;
+
+        newObj[field] = value;
+
         setSelected(newObj);
-        console.log(selected);
     }
 
     return (
         <div>
             <NavigationPanel />
+
+
             <Modal className="modal-lg" show={show} scrollable={true} onHide={() => setShow(false)}>
                 <Modal.Header closeButton>
                 <Modal.Title><Trans i18nKey="builders"/></Modal.Title>
@@ -111,17 +112,17 @@ export default function BuilderView() {
                         <div class="col-8 align-self-center">
                             <label class="form-label"><Trans i18nKey="name"/></label>
                             <input class="form-control" 
-                                defaultValue={selected?.idNavigation?.firstName } 
-                                onChange={e => updateSelected("firstName", e.target.value)}/>
+                                value={selected.idNavigation.firstName} 
+                                onChange={e => updateSelected("idNavigation.firstName", e.target.value)}/>
                         </div>
                         </div>
 
                         <div class="row justify-content-md-center m-4">
                         <div class="col-8 align-self-center">
-                            <label class="form-label"><Trans i18nKey="lastName"/></label>
+                            <label class="form-label"><Trans i18nKey="lastname"/></label>
                             <input class="form-control" 
-                                defaultValue={selected?.idNavigation?.secondName} 
-                                onChange={e => updateSelected("secondName", e.target.value)}/>
+                                value={selected.idNavigation.secondName} 
+                                onChange={e => updateSelected("idNavigation.secondName", e.target.value)}/>
                         </div>
                         </div>
 
@@ -129,8 +130,8 @@ export default function BuilderView() {
                         <div class="col-8 align-self-center">
                             <label class="form-label"><Trans i18nKey="phone"/></label>
                             <input type="phone" class="form-control" 
-                                defaultValue={selected?.idNavigation?.phone}
-                                onChange={e => updateSelected("phone", e.target.value)}/>
+                                value={selected.idNavigation.phone}
+                                onChange={e => updateSelected("idNavigation.phone", e.target.value)}/>
                         </div>
                         </div>
 
@@ -138,8 +139,9 @@ export default function BuilderView() {
                         <div class="col-8 align-self-center">
                             <label class="form-label"><Trans i18nKey="email"/></label>
                             <input type="email" class="form-control" 
-                                defaultValue={selected?.idNavigation?.email}
-                                onChange={e =>  updateSelected("email", e.target.value) }/>
+                                value={selected.idNavigation.email}
+                                onChange={e => { updateSelected("idNavigation.email", e.target.value);
+                                console.log(e.target.value) }}/>
                         </div>
                         </div>               
                     </div>
